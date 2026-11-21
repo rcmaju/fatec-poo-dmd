@@ -1,0 +1,166 @@
+public class Matriz {
+    private int linhas;
+    private int colunas;
+    private double[][] dados;
+
+    // Construtor
+    public Matriz(int linhas, int colunas) {
+        this.linhas = linhas;
+        this.colunas = colunas;
+        this.dados = new double[linhas][colunas];
+    }
+
+    // Leitura e escrita
+    public double getElemento(int linha, int coluna) {
+        return dados[linha][coluna];
+    }
+
+    public void setElemento(int linha, int coluna, double valor) {
+        dados[linha][coluna] = valor;
+    }
+
+    public int getLinhas() { return linhas; }
+    public int getColunas() { return colunas; }
+
+    // a) Comparação semântica
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Matriz outra = (Matriz) obj;
+        if (this.linhas != outra.linhas || this.colunas != outra.colunas) return false;
+
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                if (Double.compare(this.dados[i][j], outra.dados[i][j]) != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // b) Transposta
+    public Matriz transposta() {
+        Matriz t = new Matriz(colunas, linhas);
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                t.setElemento(j, i, this.dados[i][j]);
+            }
+        }
+        return t;
+    }
+
+    // c) Oposta
+    public Matriz oposta() {
+        Matriz op = new Matriz(linhas, colunas);
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                op.setElemento(i, j, -this.dados[i][j]);
+            }
+        }
+        return op;
+    }
+
+    // d) Matriz nula
+    public static Matriz gerarNula(int linhas, int colunas) {
+        return new Matriz(linhas, colunas); // Em Java, arrays double já inicializam com 0.0
+    }
+
+    // e) Matriz identidade
+    public boolean isIdentidade() {
+        if (linhas != colunas) return false;
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                if (i == j && dados[i][j] != 1.0) return false;
+                if (i != j && dados[i][j] != 0.0) return false;
+            }
+        }
+        return true;
+    }
+
+    // f) Matriz diagonal
+    public boolean isDiagonal() {
+        if (linhas != colunas) return false;
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                if (i != j && dados[i][j] != 0.0) return false;
+            }
+        }
+        return true;
+    }
+
+    // g) Matriz singular (diagonal com elementos da diagonal principal iguais)
+    public boolean isSingular() {
+        if (!isDiagonal()) return false;
+        double referencia = dados[0][0];
+        for (int i = 1; i < linhas; i++) {
+            if (dados[i][i] != referencia) return false;
+        }
+        return true;
+    }
+
+    // h) Matriz simétrica
+    public boolean isSimetrica() {
+        if (linhas != colunas) return false;
+        return this.equals(this.transposta());
+    }
+
+    // i) Matriz anti-simétrica
+    public boolean isAntiSimetrica() {
+        if (linhas != colunas) return false;
+        return this.oposta().equals(this.transposta());
+    }
+
+    // j) Adicionar (altera a própria matriz)
+    public void adicionar(Matriz outra) {
+        if (this.linhas != outra.linhas || this.colunas != outra.colunas) {
+            throw new IllegalArgumentException("Dimensões incompatíveis para soma.");
+        }
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                this.dados[i][j] += outra.dados[i][j];
+            }
+        }
+    }
+
+    // k) Subtrair (altera a própria matriz)
+    public void subtrair(Matriz outra) {
+        if (this.linhas != outra.linhas || this.colunas != outra.colunas) {
+            throw new IllegalArgumentException("Dimensões incompatíveis para subtração.");
+        }
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                this.dados[i][j] -= outra.dados[i][j];
+            }
+        }
+    }
+
+    // l) Multiplicar (altera a própria matriz)
+    public void multiplicar(Matriz outra) {
+        if (this.colunas != outra.linhas) {
+            throw new IllegalArgumentException("Dimensões incompatíveis para multiplicação.");
+        }
+        double[][] resultado = new double[this.linhas][outra.colunas];
+        for (int i = 0; i < this.linhas; i++) {
+            for (int j = 0; j < outra.colunas; j++) {
+                for (int k = 0; k < this.colunas; k++) {
+                    resultado[i][j] += this.dados[i][k] * outra.dados[k][j];
+                }
+            }
+        }
+        this.colunas = outra.colunas;
+        this.dados = resultado;
+    }
+
+    // m) Cópia da matriz
+    public Matriz copiar() {
+        Matriz copia = new Matriz(linhas, colunas);
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                copia.setElemento(i, j, this.dados[i][j]);
+            }
+        }
+        return copia;
+    }
+}

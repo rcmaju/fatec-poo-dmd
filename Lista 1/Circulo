@@ -1,0 +1,62 @@
+public class Circulo {
+    private double raio;
+    private Ponto2D centro;
+
+    // a) Construtor com raio e ponto (centro)
+    public Circulo(double raio, Ponto2D centro) {
+        this.raio = raio;
+        this.centro = new Ponto2D(centro);
+    }
+
+    // b) Construtor com raio posicionado na origem
+    public Circulo(double raio) {
+        this.raio = raio;
+        this.centro = new Ponto2D(0.0, 0.0);
+    }
+
+    // c) Métodos de acesso ao raio
+    public double getRaio() { return raio; }
+    public void setRaio(double raio) { this.raio = raio; }
+
+    public Ponto2D getCentro() { return centro; }
+
+    // d) Inflar e desinflar com valor
+    public void inflar(double valor) {
+        this.raio += valor;
+    }
+
+    public void desinflar(double valor) {
+        if (this.raio - valor >= 0) {
+            this.raio -= valor;
+        }
+    }
+
+    // e) Inflar e desinflar sobrecarregados (1 unidade)
+    public void inflar() {
+        this.raio++;
+    }
+
+    public void desinflar() {
+        if (this.raio >= 1) {
+            this.raio--;
+        }
+    }
+
+    // h) Métodos sobrecarregados mover
+    public void mover() {
+        this.centro.mover();
+    }
+
+    public void mover(double x, double y) {
+        this.centro.mover(x, y);
+    }
+
+    public void mover(Ponto2D novoCentro) {
+        this.centro.mover(novoCentro);
+    }
+
+    // f) Área do círculo
+    public double calcularArea() {
+        return Math.PI * Math.pow(this.raio, 2);
+    }
+}

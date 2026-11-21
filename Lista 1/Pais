@@ -1,0 +1,78 @@
+public class Pais {
+    private String codigoISO;
+    private String nome;
+    private long populacao;
+    private double dimensao;
+    private Pais[] fronteiras;
+    private int qtdFronteiras;
+
+    // a) Construtor
+    public Pais(String codigoISO, String nome, double dimensao) {
+        this.codigoISO = codigoISO;
+        this.nome = nome;
+        this.dimensao = dimensao;
+        this.fronteiras = new Pais[40];
+        this.qtdFronteiras = 0;
+    }
+
+    // b) Getters e Setters
+    public String getCodigoISO() { return codigoISO; }
+    public void setCodigoISO(String codigoISO) { this.codigoISO = codigoISO; }
+
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+
+    public long getPopulacao() { return populacao; }
+    public void setPopulacao(long populacao) { this.populacao = populacao; }
+
+    public double getDimensao() { return dimensao; }
+    public void setDimensao(double dimensao) { this.dimensao = dimensao; }
+
+    // Método auxiliar para cadastrar fronteira
+    public void adicionarFronteira(Pais pais) {
+        if (qtdFronteiras < 40 && !this.equals(pais) && !isLimitrofe(pais)) {
+            this.fronteiras[qtdFronteiras++] = pais;
+        }
+    }
+
+    // c) Igualdade semântica pelo código ISO
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Pais outro = (Pais) obj;
+        return this.codigoISO != null && this.codigoISO.equalsIgnoreCase(outro.codigoISO);
+    }
+
+    // d) Verifica se outro país é limítrofe
+    public boolean isLimitrofe(Pais outro) {
+        for (int i = 0; i < qtdFronteiras; i++) {
+            if (fronteiras[i].equals(outro)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // e) Densidade populacional
+    public double getDensidadePopulacional() {
+        if (dimensao == 0) return 0;
+        return populacao / dimensao;
+    }
+
+    // f) Array de vizinhos comuns
+    public Pais[] vizinhosComuns(Pais outro) {
+        Pais[] temp = new Pais[40];
+        int count = 0;
+
+        for (int i = 0; i < this.qtdFronteiras; i++) {
+            if (outro.isLimitrofe(this.fronteiras[i])) {
+                temp[count++] = this.fronteiras[i];
+            }
+        }
+
+        Pais[] resultado = new Pais[count];
+        System.arraycopy(temp, 0, resultado, 0, count);
+        return resultado;
+    }
+}

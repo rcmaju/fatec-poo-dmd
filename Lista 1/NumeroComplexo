@@ -1,0 +1,70 @@
+public class NumeroComplexo {
+    private double real;
+    private double imaginario;
+
+    // a) Construtor
+    public NumeroComplexo(double real, double imaginario) {
+        this.real = real;
+        this.imaginario = imaginario;
+    }
+
+    // b) Getters e Setters
+    public double getReal() { return real; }
+    public void setReal(double real) { this.real = real; }
+
+    public double getImaginario() { return imaginario; }
+    public void setImaginario(double imaginario) { this.imaginario = imaginario; }
+
+    // c) Somar
+    public NumeroComplexo somar(NumeroComplexo outro) {
+        double a = this.real + outro.real;
+        double b = this.imaginario + outro.imaginario;
+        return new NumeroComplexo(a, b);
+    }
+
+    // d) Subtrair
+    public NumeroComplexo subtrair(NumeroComplexo outro) {
+        double a = this.real - outro.real;
+        double b = this.imaginario - outro.imaginario;
+        return new NumeroComplexo(a, b);
+    }
+
+    // e) Multiplicar: (ac - bd) + (ad + bc)i
+    public NumeroComplexo multiplicar(NumeroComplexo outro) {
+        double a = (this.real * outro.real) - (this.imaginario * outro.imaginario);
+        double b = (this.real * outro.imaginario) + (this.imaginario * outro.real);
+        return new NumeroComplexo(a, b);
+    }
+
+    // f) Dividir: (ac + bd)/(c² + d²) + (bc - ad)/(c² + d²)i
+    public NumeroComplexo dividir(NumeroComplexo outro) {
+        double denominador = Math.pow(outro.real, 2) + Math.pow(outro.imaginario, 2);
+        if (denominador == 0) {
+            throw new ArithmeticException("Divisão por zero.");
+        }
+        double a = ((this.real * outro.real) + (this.imaginario * outro.imaginario)) / denominador;
+        double b = ((this.imaginario * outro.real) - (this.real * outro.imaginario)) / denominador;
+        return new NumeroComplexo(a, b);
+    }
+
+    // g) Comparação semântica
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        NumeroComplexo outro = (NumeroComplexo) obj;
+        return Double.compare(outro.real, real) == 0 && Double.compare(outro.imaginario, imaginario) == 0;
+    }
+
+    // h) Representação String
+    @Override
+    public String toString() {
+        String sinal = (imaginario >= 0) ? " + " : " - ";
+        return real + sinal + Math.abs(imaginario) + "i";
+    }
+
+    // i) Módulo
+    public double modulo() {
+        return Math.sqrt(Math.pow(this.real, 2) + Math.pow(this.imaginario, 2));
+    }
+}

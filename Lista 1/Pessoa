@@ -1,0 +1,55 @@
+import java.util.Objects;
+
+public class Pessoa {
+    private String nome;
+    private Pessoa pai;
+    private Pessoa mae;
+
+    // a.i) Construtor completo
+    public Pessoa(String nome, Pessoa pai, Pessoa mae) {
+        this.nome = nome;
+        this.pai = pai;
+        this.mae = mae;
+    }
+
+    // a.ii) Construtor apenas com nome
+    public Pessoa(String nome) {
+        this(nome, null, null);
+    }
+
+    public String getNome() { return nome; }
+    public Pessoa getPai() { return pai; }
+    public Pessoa getMae() { return mae; }
+
+    // b) Igualdade semântica (mesmo nome e mesma mãe)
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Pessoa outra = (Pessoa) obj;
+        return Objects.equals(this.nome, outra.nome) && Objects.equals(this.mae, outra.mae);
+    }
+
+    // c) Verifica se duas pessoas são irmãs (mesmo pai ou mesma mãe, e não são a mesma pessoa)
+    public boolean isIrma(Pessoa outra) {
+        if (outra == null || this == outra) return false;
+        boolean mesmoPai = (this.pai != null && this.pai.equals(outra.pai));
+        boolean mesmaMae = (this.mae != null && this.mae.equals(outra.mae));
+        return mesmoPai || mesmaMae;
+    }
+
+    // d) Verifica recursivamente se uma pessoa é antecessora
+    public boolean isAntecessora(Pessoa candidata) {
+        if (candidata == null) return false;
+        
+        if ((this.pai != null && this.pai.equals(candidata)) || 
+            (this.mae != null && this.mae.equals(candidata))) {
+            return true;
+        }
+        
+        boolean naLinhaPaterna = (this.pai != null) && this.pai.isAntecessora(candidata);
+        boolean naLinhaMaterna = (this.mae != null) && this.mae.isAntecessora(candidata);
+        
+        return naLinhaPaterna || naLinhaMaterna;
+    }
+}

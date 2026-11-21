@@ -1,0 +1,49 @@
+public class Reta {
+    private double a; // coeficiente angular
+    private double b; // coeficiente linear
+
+    // a.i) Construtor com coeficientes angular e linear
+    public Reta(double a, double b) {
+        this.a = a;
+        this.b = b;
+    }
+
+    // a.ii) Construtor a partir de dois pontos
+    public Reta(Ponto2D p1, Ponto2D p2) {
+        if (p1.getX() == p2.getX()) {
+            throw new IllegalArgumentException("Reta vertical não pode ser representada por y = ax + b.");
+        }
+        this.a = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+        this.b = p1.getY() - (this.a * p1.getX());
+    }
+
+    // b) Getters e Setters
+    public double getA() { return a; }
+    public void setA(double a) { this.a = a; }
+
+    public double getB() { return b; }
+    public void setB(double b) { this.b = b; }
+
+    // c) Verifica se um ponto pertence à reta
+    public boolean pertence(Ponto2D p) {
+        // Usando margem de erro (epsilon) por conta da precisão de ponto flutuante
+        return Math.abs(p.getY() - (this.a * p.getX() + this.b)) < 1e-9;
+    }
+
+    // d) Representação String
+    @Override
+    public String toString() {
+        String sinal = (b >= 0) ? " + " : " - ";
+        return "y = " + a + "x" + sinal + Math.abs(b);
+    }
+
+    // e) Ponto de interseção com outra reta (null se paralelas)
+    public Ponto2D intersecao(Reta outra) {
+        if (Double.compare(this.a, outra.a) == 0) {
+            return null; // Retas paralelas ou coincidentes
+        }
+        double x = (outra.b - this.b) / (this.a - outra.a);
+        double y = (this.a * x) + this.b;
+        return new Ponto2D(x, y);
+    }
+}

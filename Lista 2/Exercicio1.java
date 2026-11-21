@@ -1,0 +1,18 @@
+import java.util.Scanner;
+
+class Exercicio1 {
+  public static void main(String[] args) {
+   try (Scanner sc = new Scanner(System.in)) {
+    System.out.print("Digite um número inteiro: ");
+    int numero = sc.nextInt();
+ 
+    if (numero > 0) {
+     System.out.println("Positivo");
+    } else if (numero < 0) {
+     System.out.println("Negativo");
+    } else {
+     System.out.println("Zero");
+    }
+   }
+ }
+}

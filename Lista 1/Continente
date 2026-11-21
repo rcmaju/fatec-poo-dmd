@@ -1,0 +1,100 @@
+public class Continente {
+    private String nome;
+    private Pais[] paises;
+    private int qtdPaises;
+
+    // a) Construtor
+    public Continente(String nome) {
+        this.nome = nome;
+        this.paises = new Pais[48];
+        this.qtdPaises = 0;
+    }
+
+    // b) Adicionar países
+    public void adicionarPais(Pais pais) {
+        if (qtdPaises < 48) {
+            this.paises[qtdPaises++] = pais;
+        }
+    }
+
+    // c) Dimensão total
+    public double getDimensaoTotal() {
+        double total = 0;
+        for (int i = 0; i < qtdPaises; i++) {
+            total += paises[i].getDimensao();
+        }
+        return total;
+    }
+
+    // d) População total
+    public long getPopulacaoTotal() {
+        long total = 0;
+        for (int i = 0; i < qtdPaises; i++) {
+            total += paises[i].getPopulacao();
+        }
+        return total;
+    }
+
+    // e) Densidade populacional do continente
+    public double getDensidadePopulacional() {
+        double dimensao = getDimensaoTotal();
+        if (dimensao == 0) return 0;
+        return getPopulacaoTotal() / dimensao;
+    }
+
+    // f) País com maior população
+    public Pais getPaisMaiorPopulacao() {
+        if (qtdPaises == 0) return null;
+        Pais maior = paises[0];
+        for (int i = 1; i < qtdPaises; i++) {
+            if (paises[i].getPopulacao() > maior.getPopulacao()) {
+                maior = paises[i];
+            }
+        }
+        return maior;
+    }
+
+    // g) País com menor população
+    public Pais getPaisMenorPopulacao() {
+        if (qtdPaises == 0) return null;
+        Pais menor = paises[0];
+        for (int i = 1; i < qtdPaises; i++) {
+            if (paises[i].getPopulacao() < menor.getPopulacao()) {
+                menor = paises[i];
+            }
+        }
+        return menor;
+    }
+
+    // h) País de maior dimensão territorial
+    public Pais getPaisMaiorDimensao() {
+        if (qtdPaises == 0) return null;
+        Pais maior = paises[0];
+        for (int i = 1; i < qtdPaises; i++) {
+            if (paises[i].getDimensao() > maior.getDimensao()) {
+                maior = paises[i];
+            }
+        }
+        return maior;
+    }
+
+    // i) País de menor dimensão territorial
+    public Pais getPaisMenorDimensao() {
+        if (qtdPaises == 0) return null;
+        Pais menor = paises[0];
+        for (int i = 1; i < qtdPaises; i++) {
+            if (paises[i].getDimensao() < menor.getDimensao()) {
+                menor = paises[i];
+            }
+        }
+        return menor;
+    }
+
+    // j) Razão territorial do maior país em relação ao menor
+    public double getRazaoTerritorial() {
+        if (qtdPaises == 0) return 0;
+        Pais maior = getPaisMaiorDimensao();
+        Pais menor = getPaisMenorDimensao();
+        return maior.getDimensao() / menor.getDimensao();
+    }
+}

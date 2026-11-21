@@ -1,0 +1,65 @@
+import java.util.Arrays;
+
+public class Conjunto {
+    private String[] elementos;
+    private int tamanho;
+
+    public Conjunto() {
+        this.elementos = new String[10]; // capacidade inicial
+        this.tamanho = 0;
+    }
+
+    // a) Adicionar elemento sem repetição e com crescimento por demanda
+    public void adicionar(String elemento) {
+        if (!pertence(elemento)) {
+            if (tamanho == elementos.length) {
+                elementos = Arrays.copyOf(elementos, elementos.length * 2);
+            }
+            elementos[tamanho++] = elemento;
+        }
+    }
+
+    // b) Verificar se elemento pertence
+    public boolean pertence(String elemento) {
+        for (int i = 0; i < tamanho; i++) {
+            if (elementos[i].equals(elemento)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // c) União
+    public Conjunto uniao(Conjunto outro) {
+        Conjunto resultado = new Conjunto();
+        for (int i = 0; i < this.tamanho; i++) {
+            resultado.adicionar(this.elementos[i]);
+        }
+        for (int i = 0; i < outro.tamanho; i++) {
+            resultado.adicionar(outro.elementos[i]);
+        }
+        return resultado;
+    }
+
+    // d) Interseção
+    public Conjunto inter(Conjunto outro) {
+        Conjunto resultado = new Conjunto();
+        for (int i = 0; i < this.tamanho; i++) {
+            if (outro.pertence(this.elementos[i])) {
+                resultado.adicionar(this.elementos[i]);
+            }
+        }
+        return resultado;
+    }
+
+    // e) Diferença (menos)
+    public Conjunto menos(Conjunto outro) {
+        Conjunto resultado = new Conjunto();
+        for (int i = 0; i < this.tamanho; i++) {
+            if (!outro.pertence(this.elementos[i])) {
+                resultado.adicionar(this.elementos[i]);
+            }
+        }
+        return resultado;
+    }
+}
